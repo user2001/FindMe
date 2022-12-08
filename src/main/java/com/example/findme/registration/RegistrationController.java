@@ -1,5 +1,6 @@
 package com.example.findme.registration;
 
+import com.example.findme.exception.UserAlreadyExistException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,10 @@ public class RegistrationController {
 
     @PostMapping
     public String register(@RequestBody RegistrationRequest request){
-        return registrationService.register(request);
+        try {
+            return registrationService.register(request);
+        } catch (UserAlreadyExistException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
